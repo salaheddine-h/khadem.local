@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khadem - منصة خدم</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #2c5aa0;
+            border: 2px solid #2c5aa0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(44, 90, 160, 0.3);
+        }
+        
+        /* Wireframe View Selector */
+        .view-selector {
+            background: white;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .view-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: #f1f3f4;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        /* Wireframe Screen */
+        .screen {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .screen-header {
+            background: #2c5aa0;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .screen-content {
+            padding: 2rem;
+            min-height: 500px;
+        }
+        
+        /* Homepage Styles */
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c5aa0;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 4rem 1rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+        
+        .search-btn {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+        
+        .category-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .form-control:focus {
+            border-color: #2c5aa0;
+        }
+        
+        .user-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .user-type-card {
+            padding: 2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .user-type-card.selected {
+            border-color: #2c5aa0;
+            background: #f0f4ff;
+        }
+        
+        /* Search Results */
+        .filters {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .worker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .worker-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .worker-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .worker-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .worker-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        
+        .rating {
+            color: #ffa500;
+            font-size: 1.2rem;
+        }
+        
+        /* Profile Page */
+        .profile-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+        
+        .profile-info h2 {
+            margin-bottom: 0.5rem;
+            color: #2c5aa0;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #e8f4f8;
+            color: #2c5aa0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 0.2rem;
+        }
+        
+        .reviews {
+            margin-top: 2rem;
+        }
+        
+        .review-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Chat Interface */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+        
+        .chat-header {
+            background: #2c5aa0;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 12px;
+            max-width: 70%;
+        }
+        
+        .message.sent {
+            background: #2c5aa0;
+            color: white;
+            margin-right: auto;
+        }
+        
+        .message.received {
+            background: white;
+            margin-left: auto;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            background: white;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            margin-left: 0.5rem;
+        }
+        
+        /* Dashboard */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        
+        .dashboard-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .worker-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">خدم</div>
+                <div class="nav-buttons">
+                    <a href="#" class="btn btn-outline">تسجيل الدخول</a>
+                    <a href="#" class="btn btn-primary">إنشاء حساب</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- View Selector -->
+        <div class="view-selector">
+            <div class="view-tabs">
+                <button class="tab-btn active" onclick="showScreen('homepage')">الصفحة الرئيسية</button>
+                <button class="tab-btn" onclick="showScreen('login')">تسجيل الدخول</button>
+                <button class="tab-btn" onclick="showScreen('search')">نتائج البحث</button>
+                <button class="tab-btn" onclick="showScreen('profile')">ملف العامل</button>
+                <button class="tab-btn" onclick="showScreen('chat')">المحادثة</button>
+                <button class="tab-btn" onclick="showScreen('worker-dashboard')">لوحة العامل</button>
+                <button class="tab-btn" onclick="showScreen('client-dashboard')">لوحة العميل</button>
+            </div>
+        </div>
+
+        <!-- Homepage Screen -->
+        <div class="screen active" id="homepage">
+            <div class="screen-header">الصفحة الرئيسية - منظور العميل</div>
+            <div class="screen-content">
+                <div class="hero">
+                    <h1>اعثر على العامل المناسب لخدمتك</h1>
+                    <p>منصة خدم تربطك بأفضل الحرفيين والعمال المهرة في منطقتك</p>
+                    
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="ابحث عن خدمة... (مثل: كهربائي، نجار، صباغ)">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                    
+                    <a href="#" class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;">ابدأ البحث الآن</a>
+                </div>
+                
+                <div class="categories">
+                    <div class="category-card">
+                        <div class="category-icon">⚡</div>
+                        <h3>كهربائي</h3>
+                        <p>أعمال الكهرباء</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🔨</div>
+                        <h3>نجار</h3>
+                        <p>أعمال النجارة</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🎨</div>
+                        <h3>صباغ</h3>
+                        <p>أعمال الدهان</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🔧</div>
+                        <h3>سباك</h3>
+                        <p>أعمال السباكة</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🏗️</div>
+                        <h3>بناء</h3>
+                        <p>أعمال البناء</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">❄️</div>
+                        <h3>تكييف</h3>
+                        <p>صيانة التكييف</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div class="screen" id="login">
+            <div class="screen-header">تسجيل الدخول / إنشاء حساب</div>
+            <div class="screen-content">
+                <div class="form-container">
+                    <div class="user-type-selector">
+                        <div class="user-type-card selected">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+                            <h3>عميل</h3>
+                            <p>أبحث عن خدمة</p>
+                        </div>
+                        <div class="user-type-card">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔧</div>
+                            <h3>عامل</h3>
+                            <p>أقدم خدمة</p>
+                        </div>
+                    </div>
+                    
+                    <form>
+                        <div class="form-group">
+                            <label>رقم الهاتف</label>
+                            <input type="tel" class="form-control" placeholder="+212 6XX XXX XXX">
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة المرور</label>
+                            <input type="password" class="form-control" placeholder="********">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">تسجيل الدخول</button>
+                        <button type="button" class="btn btn-outline" style="width: 100%;">إنشاء حساب جديد</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results Screen -->
+        <div class="screen" id="search">
+            <div class="screen-header">نتائج البحث - كهربائي في الدار البيضاء</div>
+            <div class="screen-content">
+                <div class="filters">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>المدينة</label>
+                            <select class="form-control" style="width: 150px;">
+                                <option>الدار البيضاء</option>
+                                <option>الرباط</option>
+                                <option>مراكش</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>المهنة</label>
+                            <select class="form-control" style="width: 150px;">
+                                <option>كهربائي</option>
+                                <option>نجار</option>
+                                <option>صباغ</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>التقييم</label>
+                            <select class="form-control" style="width: 120px;">
+                                <option>الكل</option>
+                                <option>⭐⭐⭐⭐⭐</option>
+                                <option>⭐⭐⭐⭐+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="worker-grid">
+                    <div class="worker-card">
+                        <div class="worker-header">
+                            <div class="worker-avatar"></div>
+                            <div>
+                                <h3>أحمد المهدي</h3>
+                                <p>كهربائي محترف</p>
+                                <div class="rating">⭐⭐⭐⭐⭐ (4.8)</div>
+                            </div>
+                        </div>
+                        <p>خبرة 5 سنوات في أعمال الكهرباء المنزلية والصناعية</p>
+                        <div style="margin: 1rem 0;">
+                            <span class="badge">متوفر اليوم</span>
+                            <span class="badge">الدار البيضاء</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" style="flex: 1;">عرض الملف</button>
+                            <button class="btn btn-outline">💬</button>
+                        </div>
+                    </div>
+                    
+                    <div class="worker-card">
+                        <div class="worker-header">
+                            <div class="worker-avatar"></div>
+                            <div>
+                                <h3>يوسف التازي</h3>
+                                <p>كهربائي</p>
+                                <div class="rating">⭐⭐⭐⭐ (4.2)</div>
+                            </div>
+                        </div>
+                        <p>متخصص في التمديدات الكهربائية وإصلاح الأعطال</p>
+                        <div style="margin: 1rem 0;">
+                            <span class="badge">متوفر غداً</span>
+                            <span class="badge">الدار البيضاء</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" style="flex: 1;">عرض الملف</button>
+                            <button class="btn btn-outline">💬</button>
+                        </div>
+                    </div>
+                    
+                    <div class="worker-card">
+                        <div class="worker-header">
+                            <div class="worker-avatar"></div>
+                            <div>
+                                <h3>محمد البوعزاوي</h3>
+                                <p>كهربائي وصيانة</p>
+                                <div class="rating">⭐⭐⭐⭐⭐ (4.9)</div>
+                            </div>
+                        </div>
+                        <p>صيانة وإصلاح جميع الأجهزة الكهربائية المنزلية</p>
+                        <div style="margin: 1rem 0;">
+                            <span class="badge">متوفر الآن</span>
+                            <span class="badge">الدار البيضاء</span>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary" style="flex: 1;">عرض الملف</button>
+                            <button class="btn btn-outline">💬</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Worker Profile Screen -->
+        <div class="screen" id="profile">
+            <div class="screen-header">ملف العامل - أحمد المهدي</div>
+            <div class="screen-content">
+                <div class="profile-header">
+                    <div class="profile-avatar"></div>
+                    <div class="profile-info">
+                        <h2>أحمد المهدي</h2>
+                        <p style="font-size: 1.2rem; color: #666;">كهربائي محترف</p>
+                        <div class="rating" style="font-size: 1.3rem; margin: 0.5rem 0;">⭐⭐⭐⭐⭐ (4.8) - 24 تقييم</div>
+                        <div>
+                            <span class="badge">متوفر اليوم</span>
+                            <span class="badge">الدار البيضاء</span>
+                            <span class="badge">خبرة 5 سنوات</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button class="btn btn-primary" style="flex: 1;">💬 بدء محادثة</button>
+                    <button class="btn btn-outline">📞 اتصال</button>
+                    <button class="btn btn-outline">💾 حفظ</button>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <h3>نبذة عني</h3>
+                    <p>كهربائي محترف بخبرة 5 سنوات في أعمال الكهرباء المنزلية والصناعية. أقدم خدمات التمديدات الكهربائية، إصلاح الأعطال، تركيب وصيانة الأجهزة الكهربائية. ملتزم بالجودة والمواعيد.</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div style="background: #f0f4ff; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #2c5aa0;">24</div>
+                        <div>مشروع مكتمل</div>
+                    </div>
+                    <div style="background: #f0f4ff; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #2c5aa0;">4.8</div>
+                        <div>متوسط التقييم</div>
+                    </div>
+                    <div style="background: #f0f4ff; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #2c5aa0;">< 2 ساعة</div>
+                        <div>وقت الاستجابة</div>
+                    </div>
+                </div>
+                
+                <div class="reviews">
+                    <h3>آراء العملاء</h3>
+                    <div class="review-card">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <strong>فاطمة الزهراء</strong>
+                            <div class="rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>عمل ممتاز وسريع. أحمد محترف جداً وملتزم بالمواعيد. أنصح به بشدة.</p>
+                    </div>
+                    <div class="review-card">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <strong>عبد الرحمن</strong>
+                            <div class="rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>حل مشكلة الكهرباء في المنزل بسرعة وبسعر معقول. شكراً له.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Screen -->
+        <div class="screen" id="chat">
+            <div class="screen-header">محادثة مع أحمد المهدي</div>
+            <div class="screen-content">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.3);"></div>
+                            <div>
+                                <div style="font-weight: bold;">أحمد المهدي</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8;">متصل الآن</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages">
+                        <div class="message received">
+                            <div>مرحباً! كيف يمكنني مساعدتك؟</div>
+                            <div style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">10:30</div>
+                        </div>
+                        <div class="message sent">
+                            <div>أهلاً أحمد، أحتاج إص
